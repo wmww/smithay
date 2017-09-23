@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["KeyboardError","Errors that can be encountered when creating a keyboard handler"]],"struct":[["KeyboardHandle","An handle to a keyboard handler"],["PointerHandle","An handle to a keyboard handler"],["Seat","Internal data of a seat global"]]});

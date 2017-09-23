@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `SurfaceAttributes` struct in crate `smithay`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, SurfaceAttributes">
+
+    <title>smithay::compositor::SurfaceAttributes - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct SurfaceAttributes</p><div class="block items"><ul><li><a href="#fields">Fields</a></li><li><a href="#implementations">Trait Implementations</a></li></ul></div><p class='location'><a href='../index.html'>smithay</a>::<wbr><a href='index.html'>compositor</a></p><script>window.sidebarCurrent = {name: 'SurfaceAttributes', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>smithay</a>::<wbr><a href='index.html'>compositor</a>::<wbr><a class="struct" href=''>SurfaceAttributes</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/smithay/compositor/mod.rs.html#128-168' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct SurfaceAttributes&lt;U&gt; {
+    pub buffer: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a>WlBuffer, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;&gt;,
+    pub buffer_scale: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    pub buffer_transform: Transform,
+    pub opaque_region: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../smithay/compositor/struct.RegionAttributes.html" title="struct smithay::compositor::RegionAttributes">RegionAttributes</a>&gt;,
+    pub input_region: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../smithay/compositor/struct.RegionAttributes.html" title="struct smithay::compositor::RegionAttributes">RegionAttributes</a>&gt;,
+    pub damage: <a class="enum" href="../../smithay/compositor/enum.Damage.html" title="enum smithay::compositor::Damage">Damage</a>,
+    pub user_data: U,
+}</pre><div class='docblock'><p>Data associated with a surface, aggreged by the handlers</p>
+
+<p>Most of the fields of this struct represent a double-buffered state, which
+should only be applied once a <code>commit</code> request is received from the surface.</p>
+
+<p>You are responsible for setting those values as you see fit to avoid
+processing them two times.</p>
+</div><h2 id='fields' class='fields'>Fields</h2><span id='structfield.buffer' class="structfield">
+                           <span id='buffer.v' class='invisible'>
+                           <code>buffer: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a>WlBuffer, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;&gt;</code>
+                           </span></span><div class='docblock'><p>Buffer defining the contents of the surface</p>
+
+<p>The tuple represent the coordinates of this buffer
+relative to the location of the current buffer.</p>
+
+<p>If set to <code>Some(None)</code>, it means the user specifically asked for the
+surface to be unmapped.</p>
+
+<p>You are free to set this field to <code>None</code> to avoid processing it several
+times. It&#39;ll be set to <code>Some(...)</code> if the user attaches a buffer (or NULL) to
+the surface.</p>
+</div><span id='structfield.buffer_scale' class="structfield">
+                           <span id='buffer_scale.v' class='invisible'>
+                           <code>buffer_scale: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a></code>
+                           </span></span><div class='docblock'><p>Scale of the contents of the buffer, for higher-resolution contents.</p>
+
+<p>If it matches the one of the output displaying this surface, no change
+is necessary.</p>
+</div><span id='structfield.buffer_transform' class="structfield">
+                           <span id='buffer_transform.v' class='invisible'>
+                           <code>buffer_transform: Transform</code>
+                           </span></span><div class='docblock'><p>Transform under which interpret the contents of the buffer</p>
+
+<p>If it matches the one of the output displaying this surface, no change
+is necessary.</p>
+</div><span id='structfield.opaque_region' class="structfield">
+                           <span id='opaque_region.v' class='invisible'>
+                           <code>opaque_region: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../smithay/compositor/struct.RegionAttributes.html" title="struct smithay::compositor::RegionAttributes">RegionAttributes</a>&gt;</code>
+                           </span></span><div class='docblock'><p>Region of the surface that is guaranteed to be opaque</p>
+
+<p>By default the whole surface is potentially transparent</p>
+</div><span id='structfield.input_region' class="structfield">
+                           <span id='input_region.v' class='invisible'>
+                           <code>input_region: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../smithay/compositor/struct.RegionAttributes.html" title="struct smithay::compositor::RegionAttributes">RegionAttributes</a>&gt;</code>
+                           </span></span><div class='docblock'><p>Region of the surface that is sensitive to user input</p>
+
+<p>By default the whole surface should be sensitive</p>
+</div><span id='structfield.damage' class="structfield">
+                           <span id='damage.v' class='invisible'>
+                           <code>damage: <a class="enum" href="../../smithay/compositor/enum.Damage.html" title="enum smithay::compositor::Damage">Damage</a></code>
+                           </span></span><div class='docblock'><p>Damage rectangle</p>
+
+<p>Hint provided by the client to suggest that only this part
+of the surface was changed and needs to be redrawn</p>
+</div><span id='structfield.user_data' class="structfield">
+                           <span id='user_data.v' class='invisible'>
+                           <code>user_data: U</code>
+                           </span></span><div class='docblock'><p>User-controlled data</p>
+
+<p>This is your field to host whatever you need.</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;U:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a> for <a class="struct" href="../../smithay/compositor/struct.SurfaceAttributes.html" title="struct smithay::compositor::SurfaceAttributes">SurfaceAttributes</a>&lt;U&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/smithay/compositor/mod.rs.html#170-182' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.default' class="method"><span id='default.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default' class='fnname'>default</a>() -&gt; <a class="struct" href="../../smithay/compositor/struct.SurfaceAttributes.html" title="struct smithay::compositor::SurfaceAttributes">SurfaceAttributes</a>&lt;U&gt;</code></span></h4>
+<div class='docblock'><p>Returns the &quot;default value&quot; for a type. <a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html#tymethod.default">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "smithay";
+    </script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

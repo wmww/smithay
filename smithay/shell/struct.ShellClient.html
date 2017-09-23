@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ShellClient` struct in crate `smithay`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ShellClient">
+
+    <title>smithay::shell::ShellClient - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct ShellClient</p><div class="block items"><ul><li><a href="#methods">Methods</a></li></ul></div><p class='location'><a href='../index.html'>smithay</a>::<wbr><a href='index.html'>shell</a></p><script>window.sidebarCurrent = {name: 'ShellClient', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>smithay</a>::<wbr><a href='index.html'>shell</a>::<wbr><a class="struct" href=''>ShellClient</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/smithay/shell/mod.rs.html#412-415' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct ShellClient&lt;SD&gt; { /* fields omitted */ }</pre><div class='docblock'><p>A shell client</p>
+
+<p>This represents an instanciation of a shell
+global (be it <code>wl_shell</code> or <code>xdg_shell</code>).</p>
+
+<p>Most of the time, you can consider that a
+wayland client will be a single shell client.</p>
+
+<p>You can use this handle to access a storage for any
+client-specific data you wish to associate with it.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;SD&gt; <a class="struct" href="../../smithay/shell/struct.ShellClient.html" title="struct smithay::shell::ShellClient">ShellClient</a>&lt;SD&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/smithay/shell/mod.rs.html#417-500' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.alive' class="method"><span id='alive.v' class='invisible'><code>fn <a href='#method.alive' class='fnname'>alive</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>Is the shell client represented by this handle still connected?</p>
+</div><h4 id='method.equals' class="method"><span id='equals.v' class='invisible'><code>fn <a href='#method.equals' class='fnname'>equals</a>(&amp;self, other: &amp;Self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>Checks if this handle and the other one actually refer to the
+same shell client</p>
+</div><h4 id='method.send_ping' class="method"><span id='send_ping.v' class='invisible'><code>fn <a href='#method.send_ping' class='fnname'>send_ping</a>(&amp;self, serial: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>&gt;</code></span></h4>
+<div class='docblock'><p>Send a ping request to this shell client</p>
+
+<p>You&#39;ll receive the reply in the <code>Handler::cient_pong()</code> method.</p>
+
+<p>A typical use is to start a timer at the same time you send this ping
+request, and cancel it when you receive the pong. If the timer runs
+down to 0 before a pong is received, mark the client as unresponsive.</p>
+
+<p>Fails if this shell client already has a pending ping or is already dead.</p>
+</div><h4 id='method.with_data' class="method"><span id='with_data.v' class='invisible'><code>fn <a href='#method.with_data' class='fnname'>with_data</a>&lt;F, T&gt;(&amp;self, f: F) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;T, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.FnOnce.html" title="trait core::ops::function::FnOnce">FnOnce</a>(&amp;mut SD) -&gt; T,&nbsp;</span></code></span></h4>
+<div class='docblock'><p>Access the user data associated with this shell client</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "smithay";
+    </script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

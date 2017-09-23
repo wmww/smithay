@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Role` trait in crate `smithay`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Role">
+
+    <title>smithay::compositor::roles::Role - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc trait">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Trait Role</p><div class="block items"><ul><li><a href="#required-methods">Required Methods</a></li><li><a href="#provided-methods">Provided Methods</a></li><li><a href="#implementors">Implementors</a></li></ul></div><p class='location'><a href='../../index.html'>smithay</a>::<wbr><a href='../index.html'>compositor</a>::<wbr><a href='index.html'>roles</a></p><script>window.sidebarCurrent = {name: 'Role', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>smithay</a>::<wbr><a href='../index.html'>compositor</a>::<wbr><a href='index.html'>roles</a>::<wbr><a class="trait" href=''>Role</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../../src/smithay/compositor/roles.rs.html#125-154' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait Role&lt;R&gt;: <a class="trait" href="../../../smithay/compositor/roles/trait.RoleType.html" title="trait smithay::compositor::roles::RoleType">RoleType</a> {
+    fn <a href='#tymethod.set_with' class='fnname'>set_with</a>(&amp;mut self, data: R) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, R&gt;;
+<div class='item-spacer'></div>    fn <a href='#tymethod.has' class='fnname'>has</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>;
+<div class='item-spacer'></div>    fn <a href='#tymethod.data' class='fnname'>data</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;&amp;R, <a class="struct" href="../../../smithay/compositor/roles/struct.WrongRole.html" title="struct smithay::compositor::roles::WrongRole">WrongRole</a>&gt;;
+<div class='item-spacer'></div>    fn <a href='#tymethod.data_mut' class='fnname'>data_mut</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;&amp;mut R, <a class="struct" href="../../../smithay/compositor/roles/struct.WrongRole.html" title="struct smithay::compositor::roles::WrongRole">WrongRole</a>&gt;;
+<div class='item-spacer'></div>    fn <a href='#tymethod.unset' class='fnname'>unset</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;R, <a class="struct" href="../../../smithay/compositor/roles/struct.WrongRole.html" title="struct smithay::compositor::roles::WrongRole">WrongRole</a>&gt;;
+
+    fn <a href='#method.set' class='fnname'>set</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>&gt;<br>&nbsp;&nbsp;&nbsp; <span class="where">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;R: <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a></span>,
+    { ... }
+}</pre><div class='docblock'><p>A trait representing the capability of a RoleType to handle a given role</p>
+
+<p>This trait allows to interact with the different roles a RoleType can
+handle.</p>
+
+<p>This trait is meant to be used generically, for example, to retrieve the
+data associated with a given role with token <code>TheRole</code>:</p>
+
+<pre class="rust rust-example-rendered">
+<span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">MyRoles</span> <span class="kw">as</span> <span class="ident">Role</span><span class="op">&lt;</span><span class="ident">RoleData</span><span class="op">&gt;&gt;</span>::<span class="ident">data</span>(<span class="ident">my_roles</span>)
+                .<span class="ident">expect</span>(<span class="string">&quot;The surface does not have this role.&quot;</span>);</pre>
+
+<p>The methods of this trait are mirrored on <code>CompositorToken</code> for easy
+access to the role data of the surfaces.</p>
+
+<p>Note that if a role is automatically handled for you by a Handler provided
+by smithay, you should not set or unset it manually on a surface. Doing so
+would likely corrupt the internal state of these handlers, causing spurious
+protocol errors and unreliable behaviour overall.</p>
+</div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.set_with' class='method'><span id='set_with.v' class='invisible'><code>fn <a href='#tymethod.set_with' class='fnname'>set_with</a>(&amp;mut self, data: R) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, R&gt;</code></span></h3><div class='docblock'><p>Set the role for the associated surface with given data</p>
+
+<p>Fails if the surface already has a role and returns the data</p>
+</div><h3 id='tymethod.has' class='method'><span id='has.v' class='invisible'><code>fn <a href='#tymethod.has' class='fnname'>has</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h3><div class='docblock'><p>Check if the associated surface has this role</p>
+</div><h3 id='tymethod.data' class='method'><span id='data.v' class='invisible'><code>fn <a href='#tymethod.data' class='fnname'>data</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;&amp;R, <a class="struct" href="../../../smithay/compositor/roles/struct.WrongRole.html" title="struct smithay::compositor::roles::WrongRole">WrongRole</a>&gt;</code></span></h3><div class='docblock'><p>Access the data associated with this role if its the current one</p>
+</div><h3 id='tymethod.data_mut' class='method'><span id='data_mut.v' class='invisible'><code>fn <a href='#tymethod.data_mut' class='fnname'>data_mut</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;&amp;mut R, <a class="struct" href="../../../smithay/compositor/roles/struct.WrongRole.html" title="struct smithay::compositor::roles::WrongRole">WrongRole</a>&gt;</code></span></h3><div class='docblock'><p>Mutably access the data associated with this role if its the current one</p>
+</div><h3 id='tymethod.unset' class='method'><span id='unset.v' class='invisible'><code>fn <a href='#tymethod.unset' class='fnname'>unset</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;R, <a class="struct" href="../../../smithay/compositor/roles/struct.WrongRole.html" title="struct smithay::compositor::roles::WrongRole">WrongRole</a>&gt;</code></span></h3><div class='docblock'><p>Remove this role from the associated surface</p>
+
+<p>Fails if the surface does not currently have this role</p>
+</div></div>
+            <h2 id='provided-methods'>Provided Methods</h2>
+            <div class='methods'>
+        <h3 id='method.set' class='method'><span id='set.v' class='invisible'><code>fn <a href='#method.set' class='fnname'>set</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;R: <a class="trait" href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html" title="trait core::default::Default">Default</a>,&nbsp;</span></code></span></h3><div class='docblock'><p>Set the role for the associated surface with default associated data</p>
+
+<p>Fails if the surface already has a role</p>
+</div></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    </ul><script type="text/javascript" async
+                         src="../../../implementors/smithay/compositor/roles/trait.Role.js">
+                 </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "smithay";
+    </script>
+    <script src="../../../main.js"></script>
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

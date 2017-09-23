@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ErrorKind` enum in crate `smithay`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ErrorKind">
+
+    <title>smithay::backend::graphics::egl::ErrorKind - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc enum">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Enum ErrorKind</p><div class="block items"><ul><li><a href="#variants">Variants</a></li><li><a href="#methods">Methods</a></li><li><a href="#implementations">Trait Implementations</a></li></ul></div><p class='location'><a href='../../../index.html'>smithay</a>::<wbr><a href='../../index.html'>backend</a>::<wbr><a href='../index.html'>graphics</a>::<wbr><a href='index.html'>egl</a></p><script>window.sidebarCurrent = {name: 'ErrorKind', ty: 'enum', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Enum <a href='../../../index.html'>smithay</a>::<wbr><a href='../../index.html'>backend</a>::<wbr><a href='../index.html'>graphics</a>::<wbr><a href='index.html'>egl</a>::<wbr><a class="enum" href=''>ErrorKind</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span></span></h1>
+<pre class='rust enum'>pub enum ErrorKind {
+    Msg(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>),
+    OpenGlVersionNotSupported(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>),
+    OpenGlesNotSupported,
+    NoAvailablePixelFormat,
+    NonMatchingSurfaceType(<a class="enum" href="../../../../smithay/backend/graphics/egl/enum.NativeType.html" title="enum smithay::backend::graphics::egl::NativeType">NativeType</a>,&nbsp;<a class="enum" href="../../../../smithay/backend/graphics/egl/enum.NativeType.html" title="enum smithay::backend::graphics::egl::NativeType">NativeType</a>),
+    NotSupported,
+    LoadingEGLFailed,
+    DisplayNotSupported,
+    InitFailed,
+    ConfigFailed,
+    CreationFailed,
+    SurfaceCreationFailed,
+    Unknown(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>),
+    // some variants omitted
+}</pre><div class='docblock'><p>The kind of an error.</p>
+</div><h2 id='variants' class='variants'>Variants</h2>
+<span id='variant.Msg' class='variant'><span id='Msg.v' class='invisible'><code>Msg(<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>)</code></span></span><div class='docblock'><p>A convenient variant for String.</p>
+</div><span id='variant.OpenGlVersionNotSupported' class='variant'><span id='OpenGlVersionNotSupported.v' class='invisible'><code>OpenGlVersionNotSupported(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>)</code></span></span><div class='docblock'><p>The requested OpenGL version is not supported</p>
+</div><span id='variant.OpenGlesNotSupported' class='variant'><span id='OpenGlesNotSupported.v' class='invisible'><code>OpenGlesNotSupported</code></span></span><div class='docblock'><p>The EGL implementation does not support creating OpenGL ES contexts</p>
+</div><span id='variant.NoAvailablePixelFormat' class='variant'><span id='NoAvailablePixelFormat.v' class='invisible'><code>NoAvailablePixelFormat</code></span></span><div class='docblock'><p>No available pixel format matched the criteria</p>
+</div><span id='variant.NonMatchingSurfaceType' class='variant'><span id='NonMatchingSurfaceType.v' class='invisible'><code>NonMatchingSurfaceType(<a class="enum" href="../../../../smithay/backend/graphics/egl/enum.NativeType.html" title="enum smithay::backend::graphics::egl::NativeType">NativeType</a>,&nbsp;<a class="enum" href="../../../../smithay/backend/graphics/egl/enum.NativeType.html" title="enum smithay::backend::graphics::egl::NativeType">NativeType</a>)</code></span></span><div class='docblock'><p>Surface type does not match the context type</p>
+</div><span id='variant.NotSupported' class='variant'><span id='NotSupported.v' class='invisible'><code>NotSupported</code></span></span><div class='docblock'><p>Context creation is not supported on the current window system</p>
+</div><span id='variant.LoadingEGLFailed' class='variant'><span id='LoadingEGLFailed.v' class='invisible'><code>LoadingEGLFailed</code></span></span><div class='docblock'><p>Loading libEGL failed</p>
+</div><span id='variant.DisplayNotSupported' class='variant'><span id='DisplayNotSupported.v' class='invisible'><code>DisplayNotSupported</code></span></span><div class='docblock'><p>EGL was unable to optain a valid EGL Display</p>
+</div><span id='variant.InitFailed' class='variant'><span id='InitFailed.v' class='invisible'><code>InitFailed</code></span></span><div class='docblock'><p>eglInitialize returned an error</p>
+</div><span id='variant.ConfigFailed' class='variant'><span id='ConfigFailed.v' class='invisible'><code>ConfigFailed</code></span></span><div class='docblock'><p>Failed to configure the EGL context</p>
+</div><span id='variant.CreationFailed' class='variant'><span id='CreationFailed.v' class='invisible'><code>CreationFailed</code></span></span><div class='docblock'><p>Context creation failed as one or more requirements could not be met. Try removing some gl attributes or pixel format requirements</p>
+</div><span id='variant.SurfaceCreationFailed' class='variant'><span id='SurfaceCreationFailed.v' class='invisible'><code>SurfaceCreationFailed</code></span></span><div class='docblock'><p>eglCreateWindowSurface failed</p>
+</div><span id='variant.Unknown' class='variant'><span id='Unknown.v' class='invisible'><code>Unknown(<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>)</code></span></span><div class='docblock'><p>The reason of failure could not be determined</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class="enum" href="../../../../smithay/backend/graphics/egl/enum.ErrorKind.html" title="enum smithay::backend::graphics::egl::ErrorKind">ErrorKind</a></code></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.description' class="method"><span id='description.v' class='invisible'><code>fn <a href='#method.description' class='fnname'>description</a>(&amp;self) -&gt; &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a></code></span></h4>
+<div class='docblock'><p>A string describing the error kind.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="enum" href="../../../../smithay/backend/graphics/egl/enum.ErrorKind.html" title="enum smithay::backend::graphics::egl::ErrorKind">ErrorKind</a></code></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html" title="trait core::fmt::Display">Display</a> for <a class="enum" href="../../../../smithay/backend/graphics/egl/enum.ErrorKind.html" title="enum smithay::backend::graphics::egl::ErrorKind">ErrorKind</a></code></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.fmt-1' class="method"><span id='fmt.v-1' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, fmt: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span></h4>
+<div class='docblock'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html#tymethod.fmt">Read more</a></p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl&lt;'a&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html" title="trait core::convert::From">From</a>&lt;&amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt; for <a class="enum" href="../../../../smithay/backend/graphics/egl/enum.ErrorKind.html" title="enum smithay::backend::graphics::egl::ErrorKind">ErrorKind</a></code></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.from' class="method"><span id='from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from' class='fnname'>from</a>(s: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; Self</code></span></h4>
+<div class='docblock'><p>Performs the conversion.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html" title="trait core::convert::From">From</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt; for <a class="enum" href="../../../../smithay/backend/graphics/egl/enum.ErrorKind.html" title="enum smithay::backend::graphics::egl::ErrorKind">ErrorKind</a></code></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.from-1' class="method"><span id='from.v-1' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from' class='fnname'>from</a>(s: <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>) -&gt; Self</code></span></h4>
+<div class='docblock'><p>Performs the conversion.</p>
+</div></div><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.From.html" title="trait core::convert::From">From</a>&lt;<a class="struct" href="../../../../smithay/backend/graphics/egl/struct.Error.html" title="struct smithay::backend::graphics::egl::Error">Error</a>&gt; for <a class="enum" href="../../../../smithay/backend/graphics/egl/enum.ErrorKind.html" title="enum smithay::backend::graphics::egl::ErrorKind">ErrorKind</a></code></span><span class='out-of-band'></span></h3>
+<div class='impl-items'><h4 id='method.from-2' class="method"><span id='from.v-2' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/convert/trait.From.html#tymethod.from' class='fnname'>from</a>(e: <a class="struct" href="../../../../smithay/backend/graphics/egl/struct.Error.html" title="struct smithay::backend::graphics::egl::Error">Error</a>) -&gt; Self</code></span></h4>
+<div class='docblock'><p>Performs the conversion.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../../";
+        window.currentCrate = "smithay";
+    </script>
+    <script src="../../../../main.js"></script>
+    <script defer src="../../../../search-index.js"></script>
+</body>
+</html>

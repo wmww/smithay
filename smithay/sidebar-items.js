@@ -1,0 +1,1 @@
+initSidebarItems({"macro":[["define_roles",""]],"mod":[["backend","Backend (rendering/input) creation helpers"],["compositor","Utilities for handling surfaces, subsurfaces and regions"],["seat","Seat global utilities"],["shell","Utilities for handling shell surfaces, toplevel and popups"],["shm","SHM handling helpers"],["utils","Various utilities functions and types"]]});

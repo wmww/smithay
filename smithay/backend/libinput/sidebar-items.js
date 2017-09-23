@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LibinputInputBackend","Libinput based `InputBackend`."],["PointerAxisEvent","Wrapper for libinput pointer axis events to implement `backend::input::PointerAxisEvent`"]]});

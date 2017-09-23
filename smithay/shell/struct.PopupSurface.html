@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `PopupSurface` struct in crate `smithay`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, PopupSurface">
+
+    <title>smithay::shell::PopupSurface - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct PopupSurface</p><div class="block items"><ul><li><a href="#methods">Methods</a></li></ul></div><p class='location'><a href='../index.html'>smithay</a>::<wbr><a href='index.html'>shell</a></p><script>window.sidebarCurrent = {name: 'PopupSurface', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>smithay</a>::<wbr><a href='index.html'>shell</a>::<wbr><a class="struct" href=''>PopupSurface</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/smithay/shell/mod.rs.html#649-654' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct PopupSurface&lt;U, R, CID, SD&gt; { /* fields omitted */ }</pre><div class='docblock'><p>A handle to a popup surface</p>
+
+<p>This is an unified abstraction over the popup surfaces
+of both <code>wl_shell</code> and <code>xdg_shell</code>.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;U, R, CID, SD&gt; <a class="struct" href="../../smithay/shell/struct.PopupSurface.html" title="struct smithay::shell::PopupSurface">PopupSurface</a>&lt;U, R, CID, SD&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;U: 'static,<br>&nbsp;&nbsp;&nbsp;&nbsp;R: <a class="trait" href="../../smithay/compositor/roles/trait.Role.html" title="trait smithay::compositor::roles::Role">Role</a>&lt;<a class="struct" href="../../smithay/shell/struct.ShellSurfaceRole.html" title="struct smithay::shell::ShellSurfaceRole">ShellSurfaceRole</a>&gt; + 'static,<br>&nbsp;&nbsp;&nbsp;&nbsp;CID: 'static,<br>&nbsp;&nbsp;&nbsp;&nbsp;SD: 'static,&nbsp;</span></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../src/smithay/shell/mod.rs.html#656-793' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.alive' class="method"><span id='alive.v' class='invisible'><code>fn <a href='#method.alive' class='fnname'>alive</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>Is the popup surface refered by this handle still alive?</p>
+</div><h4 id='method.equals' class="method"><span id='equals.v' class='invisible'><code>fn <a href='#method.equals' class='fnname'>equals</a>(&amp;self, other: &amp;Self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>Do this handle and the other one actually refer to the same popup surface?</p>
+</div><h4 id='method.client' class="method"><span id='client.v' class='invisible'><code>fn <a href='#method.client' class='fnname'>client</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../smithay/shell/struct.ShellClient.html" title="struct smithay::shell::ShellClient">ShellClient</a>&lt;SD&gt;&gt;</code></span></h4>
+<div class='docblock'><p>Retrieve the shell client owning this popup surface</p>
+
+<p>Returns <code>None</code> if the surface does actually no longer exist.</p>
+</div><h4 id='method.send_configure' class="method"><span id='send_configure.v' class='invisible'><code>fn <a href='#method.send_configure' class='fnname'>send_configure</a>(&amp;self, cfg: <a class="struct" href="../../smithay/shell/struct.PopupConfigure.html" title="struct smithay::shell::PopupConfigure">PopupConfigure</a>) -&gt; EventResult&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>&gt;</code></span></h4>
+<div class='docblock'><p>Send a configure event to this toplevel surface to suggest it a new configuration</p>
+
+<p>The serial of this configure will be tracked waiting for the client to ACK it.</p>
+</div><h4 id='method.ensure_configured' class="method"><span id='ensure_configured.v' class='invisible'><code>fn <a href='#method.ensure_configured' class='fnname'>ensure_configured</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code></span></h4>
+<div class='docblock'><p>Make sure this surface was configured</p>
+
+<p>Returns <code>true</code> if it was, if not, returns <code>false</code> and raise
+a protocol error to the associated client. Also returns <code>false</code>
+if the surface is already destroyed.</p>
+
+<p>xdg_shell mandates that a client acks a configure before commiting
+anything.</p>
+</div><h4 id='method.send_popup_done' class="method"><span id='send_popup_done.v' class='invisible'><code>fn <a href='#method.send_popup_done' class='fnname'>send_popup_done</a>(&amp;self) -&gt; EventResult&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>&gt;</code></span></h4>
+<div class='docblock'><p>Send a &#39;popup_done&#39; event to the popup surface</p>
+
+<p>It means that the use has dismissed the popup surface, or that
+the pointer has left the area of popup grab if there was a grab.</p>
+</div><h4 id='method.get_surface' class="method"><span id='get_surface.v' class='invisible'><code>fn <a href='#method.get_surface' class='fnname'>get_surface</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;WlSurface&gt;</code></span></h4>
+<div class='docblock'><p>Access the underlying <code>wl_surface</code> of this toplevel surface</p>
+
+<p>Returns <code>None</code> if the toplevel surface actually no longer exists.</p>
+</div><h4 id='method.get_pending_state' class="method"><span id='get_pending_state.v' class='invisible'><code>fn <a href='#method.get_pending_state' class='fnname'>get_pending_state</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../smithay/shell/struct.PopupState.html" title="struct smithay::shell::PopupState">PopupState</a>&gt;</code></span></h4>
+<div class='docblock'><p>Retrieve a copy of the pending state of this popup surface</p>
+
+<p>Returns <code>None</code> of the popup surface actually no longer exists.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "smithay";
+    </script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

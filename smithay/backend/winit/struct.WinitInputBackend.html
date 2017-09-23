@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `WinitInputBackend` struct in crate `smithay`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, WinitInputBackend">
+
+    <title>smithay::backend::winit::WinitInputBackend - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc struct">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Struct WinitInputBackend</p><div class="block items"><ul><li><a href="#implementations">Trait Implementations</a></li></ul></div><p class='location'><a href='../../index.html'>smithay</a>::<wbr><a href='../index.html'>backend</a>::<wbr><a href='index.html'>winit</a></p><script>window.sidebarCurrent = {name: 'WinitInputBackend', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>smithay</a>::<wbr><a href='../index.html'>backend</a>::<wbr><a href='index.html'>winit</a>::<wbr><a class="struct" href=''>WinitInputBackend</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../../src/smithay/backend/winit.rs.html#70-79' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct WinitInputBackend { /* fields omitted */ }</pre><div class='docblock'><p>Abstracted event loop of a <code>winit</code> <code>Window</code> implementing the <code>InputBackend</code> trait</p>
+
+<p>You need to call <code>dispatch_new_events</code> periodically to receive any events.</p>
+</div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class="trait" href="../../../smithay/backend/input/trait.InputBackend.html" title="trait smithay::backend::input::InputBackend">InputBackend</a> for <a class="struct" href="../../../smithay/backend/winit/struct.WinitInputBackend.html" title="struct smithay::backend::winit::WinitInputBackend">WinitInputBackend</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../../../src/smithay/backend/winit.rs.html#532-817' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='associatedtype.InputConfig' class="type"><span id='InputConfig.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.InputConfig' class="type">InputConfig</a> = <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a></code></span></h4>
+<div class='docblock'><p>Type of input device associated with the backend</p>
+</div><h4 id='associatedtype.EventError' class="type"><span id='EventError.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.EventError' class="type">EventError</a> = <a class="enum" href="../../../smithay/backend/winit/enum.WinitInputError.html" title="enum smithay::backend::winit::WinitInputError">WinitInputError</a></code></span></h4>
+<div class='docblock'><p>Type representing errors that may be returned when processing events</p>
+</div><h4 id='associatedtype.KeyboardKeyEvent' class="type"><span id='KeyboardKeyEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.KeyboardKeyEvent' class="type">KeyboardKeyEvent</a> = <a class="struct" href="../../../smithay/backend/winit/struct.WinitKeyboardInputEvent.html" title="struct smithay::backend::winit::WinitKeyboardInputEvent">WinitKeyboardInputEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing keyboard events</p>
+</div><h4 id='associatedtype.PointerAxisEvent' class="type"><span id='PointerAxisEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerAxisEvent' class="type">PointerAxisEvent</a> = <a class="struct" href="../../../smithay/backend/winit/struct.WinitMouseWheelEvent.html" title="struct smithay::backend::winit::WinitMouseWheelEvent">WinitMouseWheelEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing axis events on pointer devices</p>
+</div><h4 id='associatedtype.PointerButtonEvent' class="type"><span id='PointerButtonEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerButtonEvent' class="type">PointerButtonEvent</a> = <a class="struct" href="../../../smithay/backend/winit/struct.WinitMouseInputEvent.html" title="struct smithay::backend::winit::WinitMouseInputEvent">WinitMouseInputEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing button events on pointer devices</p>
+</div><h4 id='associatedtype.PointerMotionEvent' class="type"><span id='PointerMotionEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerMotionEvent' class="type">PointerMotionEvent</a> = <a class="enum" href="../../../smithay/backend/input/enum.UnusedEvent.html" title="enum smithay::backend::input::UnusedEvent">UnusedEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing motion events of pointer devices</p>
+</div><h4 id='associatedtype.PointerMotionAbsoluteEvent' class="type"><span id='PointerMotionAbsoluteEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerMotionAbsoluteEvent' class="type">PointerMotionAbsoluteEvent</a> = <a class="struct" href="../../../smithay/backend/winit/struct.WinitMouseMovedEvent.html" title="struct smithay::backend::winit::WinitMouseMovedEvent">WinitMouseMovedEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing motion events of pointer devices</p>
+</div><h4 id='associatedtype.TouchDownEvent' class="type"><span id='TouchDownEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchDownEvent' class="type">TouchDownEvent</a> = <a class="struct" href="../../../smithay/backend/winit/struct.WinitTouchStartedEvent.html" title="struct smithay::backend::winit::WinitTouchStartedEvent">WinitTouchStartedEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing touch events starting</p>
+</div><h4 id='associatedtype.TouchUpEvent' class="type"><span id='TouchUpEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchUpEvent' class="type">TouchUpEvent</a> = <a class="struct" href="../../../smithay/backend/winit/struct.WinitTouchEndedEvent.html" title="struct smithay::backend::winit::WinitTouchEndedEvent">WinitTouchEndedEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing touch events ending</p>
+</div><h4 id='associatedtype.TouchMotionEvent' class="type"><span id='TouchMotionEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchMotionEvent' class="type">TouchMotionEvent</a> = <a class="struct" href="../../../smithay/backend/winit/struct.WinitTouchMovedEvent.html" title="struct smithay::backend::winit::WinitTouchMovedEvent">WinitTouchMovedEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing touch events from moving</p>
+</div><h4 id='associatedtype.TouchCancelEvent' class="type"><span id='TouchCancelEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchCancelEvent' class="type">TouchCancelEvent</a> = <a class="struct" href="../../../smithay/backend/winit/struct.WinitTouchCancelledEvent.html" title="struct smithay::backend::winit::WinitTouchCancelledEvent">WinitTouchCancelledEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing cancelling of touch events</p>
+</div><h4 id='associatedtype.TouchFrameEvent' class="type"><span id='TouchFrameEvent.t' class='invisible'><code>type <a href='../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchFrameEvent' class="type">TouchFrameEvent</a> = <a class="enum" href="../../../smithay/backend/input/enum.UnusedEvent.html" title="enum smithay::backend::input::UnusedEvent">UnusedEvent</a></code></span></h4>
+<div class='docblock'><p>Type representing touch frame events</p>
+</div><h4 id='method.set_handler' class="method"><span id='set_handler.v' class='invisible'><code>fn <a href='../../../smithay/backend/input/trait.InputBackend.html#tymethod.set_handler' class='fnname'>set_handler</a>&lt;H:&nbsp;<a class="trait" href="../../../smithay/backend/input/trait.InputHandler.html" title="trait smithay::backend::input::InputHandler">InputHandler</a>&lt;Self&gt; + 'static&gt;(&amp;mut self, handler: H)</code></span></h4>
+<div class='docblock'><p>Sets a new handler for this <code>InputBackend</code></p>
+</div><h4 id='method.get_handler' class="method"><span id='get_handler.v' class='invisible'><code>fn <a href='../../../smithay/backend/input/trait.InputBackend.html#tymethod.get_handler' class='fnname'>get_handler</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;mut <a class="trait" href="../../../smithay/backend/input/trait.InputHandler.html" title="trait smithay::backend::input::InputHandler">InputHandler</a>&lt;Self&gt;&gt;</code></span></h4>
+<div class='docblock'><p>Get a reference to the currently set handler, if any</p>
+</div><h4 id='method.clear_handler' class="method"><span id='clear_handler.v' class='invisible'><code>fn <a href='../../../smithay/backend/input/trait.InputBackend.html#tymethod.clear_handler' class='fnname'>clear_handler</a>(&amp;mut self)</code></span></h4>
+<div class='docblock'><p>Clears the currently handler, if one is set</p>
+</div><h4 id='method.input_config' class="method"><span id='input_config.v' class='invisible'><code>fn <a href='../../../smithay/backend/input/trait.InputBackend.html#tymethod.input_config' class='fnname'>input_config</a>(&amp;mut self) -&gt; &amp;mut Self::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.InputConfig" title="type smithay::backend::input::InputBackend::InputConfig">InputConfig</a></code></span></h4>
+<div class='docblock'><p>Get current <code>InputConfig</code></p>
+</div><h4 id='method.dispatch_new_events' class="method"><span id='dispatch_new_events.v' class='invisible'><code>fn <a href='../../../smithay/backend/input/trait.InputBackend.html#tymethod.dispatch_new_events' class='fnname'>dispatch_new_events</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, <a class="enum" href="../../../smithay/backend/winit/enum.WinitInputError.html" title="enum smithay::backend::winit::WinitInputError">WinitInputError</a>&gt;</code></span></h4>
+<div class='docblock'><p>Processes new events of the underlying event loop to drive the set <code>InputHandler</code>.</p>
+
+<p>You need to periodically call this function to keep the underlying event loop and
+<code>Window</code> active. Otherwise the window may no respond to user interaction and no
+input events will be received by a set <code>InputHandler</code>.</p>
+
+<p>Returns an error if the <code>Window</code> the window has been closed. Calling
+<code>dispatch_new_events</code> again after the <code>Window</code> has been closed is considered an
+application error and unspecified baviour may occur.</p>
+
+<p>The linked <code>WinitGraphicsBackend</code> will error with a lost Context and should
+not be used anymore as well.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "smithay";
+    </script>
+    <script src="../../../main.js"></script>
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

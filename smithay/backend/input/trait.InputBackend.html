@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `InputBackend` trait in crate `smithay`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, InputBackend">
+
+    <title>smithay::backend::input::InputBackend - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc trait">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Trait InputBackend</p><div class="block items"><ul><li><a href="#associated-types">Associated Types</a></li><li><a href="#required-methods">Required Methods</a></li><li><a href="#implementors">Implementors</a></li></ul></div><p class='location'><a href='../../index.html'>smithay</a>::<wbr><a href='../index.html'>backend</a>::<wbr><a href='index.html'>input</a></p><script>window.sidebarCurrent = {name: 'InputBackend', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>smithay</a>::<wbr><a href='../index.html'>backend</a>::<wbr><a href='index.html'>input</a>::<wbr><a class="trait" href=''>InputBackend</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../../src/smithay/backend/input.rs.html#483-523' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait InputBackend: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a> {
+    type <a href='#associatedtype.InputConfig' class="type">InputConfig</a>: ?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a>;
+    type <a href='#associatedtype.EventError' class="type">EventError</a>: <a class="trait" href="https://doc.rust-lang.org/nightly/std/error/trait.Error.html" title="trait std::error::Error">Error</a>;
+    type <a href='#associatedtype.KeyboardKeyEvent' class="type">KeyboardKeyEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.KeyboardKeyEvent.html" title="trait smithay::backend::input::KeyboardKeyEvent">KeyboardKeyEvent</a>;
+    type <a href='#associatedtype.PointerAxisEvent' class="type">PointerAxisEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.PointerAxisEvent.html" title="trait smithay::backend::input::PointerAxisEvent">PointerAxisEvent</a>;
+    type <a href='#associatedtype.PointerButtonEvent' class="type">PointerButtonEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.PointerButtonEvent.html" title="trait smithay::backend::input::PointerButtonEvent">PointerButtonEvent</a>;
+    type <a href='#associatedtype.PointerMotionEvent' class="type">PointerMotionEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.PointerMotionEvent.html" title="trait smithay::backend::input::PointerMotionEvent">PointerMotionEvent</a>;
+    type <a href='#associatedtype.PointerMotionAbsoluteEvent' class="type">PointerMotionAbsoluteEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.PointerMotionAbsoluteEvent.html" title="trait smithay::backend::input::PointerMotionAbsoluteEvent">PointerMotionAbsoluteEvent</a>;
+    type <a href='#associatedtype.TouchDownEvent' class="type">TouchDownEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchDownEvent.html" title="trait smithay::backend::input::TouchDownEvent">TouchDownEvent</a>;
+    type <a href='#associatedtype.TouchUpEvent' class="type">TouchUpEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchUpEvent.html" title="trait smithay::backend::input::TouchUpEvent">TouchUpEvent</a>;
+    type <a href='#associatedtype.TouchMotionEvent' class="type">TouchMotionEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchMotionEvent.html" title="trait smithay::backend::input::TouchMotionEvent">TouchMotionEvent</a>;
+    type <a href='#associatedtype.TouchCancelEvent' class="type">TouchCancelEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchCancelEvent.html" title="trait smithay::backend::input::TouchCancelEvent">TouchCancelEvent</a>;
+    type <a href='#associatedtype.TouchFrameEvent' class="type">TouchFrameEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchFrameEvent.html" title="trait smithay::backend::input::TouchFrameEvent">TouchFrameEvent</a>;
+    fn <a href='#tymethod.set_handler' class='fnname'>set_handler</a>&lt;H:&nbsp;<a class="trait" href="../../../smithay/backend/input/trait.InputHandler.html" title="trait smithay::backend::input::InputHandler">InputHandler</a>&lt;Self&gt; + 'static&gt;(&amp;mut self, handler: H);
+<div class='item-spacer'></div>    fn <a href='#tymethod.get_handler' class='fnname'>get_handler</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;mut <a class="trait" href="../../../smithay/backend/input/trait.InputHandler.html" title="trait smithay::backend::input::InputHandler">InputHandler</a>&lt;Self&gt;&gt;;
+<div class='item-spacer'></div>    fn <a href='#tymethod.clear_handler' class='fnname'>clear_handler</a>(&amp;mut self);
+<div class='item-spacer'></div>    fn <a href='#tymethod.input_config' class='fnname'>input_config</a>(&amp;mut self) -&gt; &amp;mut Self::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.InputConfig" title="type smithay::backend::input::InputBackend::InputConfig">InputConfig</a>;
+<div class='item-spacer'></div>    fn <a href='#tymethod.dispatch_new_events' class='fnname'>dispatch_new_events</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, Self::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.EventError" title="type smithay::backend::input::InputBackend::EventError">EventError</a>&gt;;
+}</pre><div class='docblock'><p>Trait that describes objects providing a source of input events. All input backends
+need to implemenent this and provide the same base gurantees about the presicion of
+given events.</p>
+</div>
+            <h2 id='associated-types'>Associated Types</h2>
+            <div class='methods'>
+        <h3 id='associatedtype.InputConfig' class='method'><span id='InputConfig.t' class='invisible'><code>type <a href='#associatedtype.InputConfig' class="type">InputConfig</a>: ?<a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html" title="trait core::marker::Sized">Sized</a></code></span></h3><div class='docblock'><p>Type of input device associated with the backend</p>
+</div><h3 id='associatedtype.EventError' class='method'><span id='EventError.t' class='invisible'><code>type <a href='#associatedtype.EventError' class="type">EventError</a>: <a class="trait" href="https://doc.rust-lang.org/nightly/std/error/trait.Error.html" title="trait std::error::Error">Error</a></code></span></h3><div class='docblock'><p>Type representing errors that may be returned when processing events</p>
+</div><h3 id='associatedtype.KeyboardKeyEvent' class='method'><span id='KeyboardKeyEvent.t' class='invisible'><code>type <a href='#associatedtype.KeyboardKeyEvent' class="type">KeyboardKeyEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.KeyboardKeyEvent.html" title="trait smithay::backend::input::KeyboardKeyEvent">KeyboardKeyEvent</a></code></span></h3><div class='docblock'><p>Type representing keyboard events</p>
+</div><h3 id='associatedtype.PointerAxisEvent' class='method'><span id='PointerAxisEvent.t' class='invisible'><code>type <a href='#associatedtype.PointerAxisEvent' class="type">PointerAxisEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.PointerAxisEvent.html" title="trait smithay::backend::input::PointerAxisEvent">PointerAxisEvent</a></code></span></h3><div class='docblock'><p>Type representing axis events on pointer devices</p>
+</div><h3 id='associatedtype.PointerButtonEvent' class='method'><span id='PointerButtonEvent.t' class='invisible'><code>type <a href='#associatedtype.PointerButtonEvent' class="type">PointerButtonEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.PointerButtonEvent.html" title="trait smithay::backend::input::PointerButtonEvent">PointerButtonEvent</a></code></span></h3><div class='docblock'><p>Type representing button events on pointer devices</p>
+</div><h3 id='associatedtype.PointerMotionEvent' class='method'><span id='PointerMotionEvent.t' class='invisible'><code>type <a href='#associatedtype.PointerMotionEvent' class="type">PointerMotionEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.PointerMotionEvent.html" title="trait smithay::backend::input::PointerMotionEvent">PointerMotionEvent</a></code></span></h3><div class='docblock'><p>Type representing motion events of pointer devices</p>
+</div><h3 id='associatedtype.PointerMotionAbsoluteEvent' class='method'><span id='PointerMotionAbsoluteEvent.t' class='invisible'><code>type <a href='#associatedtype.PointerMotionAbsoluteEvent' class="type">PointerMotionAbsoluteEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.PointerMotionAbsoluteEvent.html" title="trait smithay::backend::input::PointerMotionAbsoluteEvent">PointerMotionAbsoluteEvent</a></code></span></h3><div class='docblock'><p>Type representing motion events of pointer devices</p>
+</div><h3 id='associatedtype.TouchDownEvent' class='method'><span id='TouchDownEvent.t' class='invisible'><code>type <a href='#associatedtype.TouchDownEvent' class="type">TouchDownEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchDownEvent.html" title="trait smithay::backend::input::TouchDownEvent">TouchDownEvent</a></code></span></h3><div class='docblock'><p>Type representing touch events starting</p>
+</div><h3 id='associatedtype.TouchUpEvent' class='method'><span id='TouchUpEvent.t' class='invisible'><code>type <a href='#associatedtype.TouchUpEvent' class="type">TouchUpEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchUpEvent.html" title="trait smithay::backend::input::TouchUpEvent">TouchUpEvent</a></code></span></h3><div class='docblock'><p>Type representing touch events ending</p>
+</div><h3 id='associatedtype.TouchMotionEvent' class='method'><span id='TouchMotionEvent.t' class='invisible'><code>type <a href='#associatedtype.TouchMotionEvent' class="type">TouchMotionEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchMotionEvent.html" title="trait smithay::backend::input::TouchMotionEvent">TouchMotionEvent</a></code></span></h3><div class='docblock'><p>Type representing touch events from moving</p>
+</div><h3 id='associatedtype.TouchCancelEvent' class='method'><span id='TouchCancelEvent.t' class='invisible'><code>type <a href='#associatedtype.TouchCancelEvent' class="type">TouchCancelEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchCancelEvent.html" title="trait smithay::backend::input::TouchCancelEvent">TouchCancelEvent</a></code></span></h3><div class='docblock'><p>Type representing cancelling of touch events</p>
+</div><h3 id='associatedtype.TouchFrameEvent' class='method'><span id='TouchFrameEvent.t' class='invisible'><code>type <a href='#associatedtype.TouchFrameEvent' class="type">TouchFrameEvent</a>: <a class="trait" href="../../../smithay/backend/input/trait.TouchFrameEvent.html" title="trait smithay::backend::input::TouchFrameEvent">TouchFrameEvent</a></code></span></h3><div class='docblock'><p>Type representing touch frame events</p>
+</div></div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.set_handler' class='method'><span id='set_handler.v' class='invisible'><code>fn <a href='#tymethod.set_handler' class='fnname'>set_handler</a>&lt;H:&nbsp;<a class="trait" href="../../../smithay/backend/input/trait.InputHandler.html" title="trait smithay::backend::input::InputHandler">InputHandler</a>&lt;Self&gt; + 'static&gt;(&amp;mut self, handler: H)</code></span></h3><div class='docblock'><p>Sets a new handler for this <code>InputBackend</code></p>
+</div><h3 id='tymethod.get_handler' class='method'><span id='get_handler.v' class='invisible'><code>fn <a href='#tymethod.get_handler' class='fnname'>get_handler</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;mut <a class="trait" href="../../../smithay/backend/input/trait.InputHandler.html" title="trait smithay::backend::input::InputHandler">InputHandler</a>&lt;Self&gt;&gt;</code></span></h3><div class='docblock'><p>Get a reference to the currently set handler, if any</p>
+</div><h3 id='tymethod.clear_handler' class='method'><span id='clear_handler.v' class='invisible'><code>fn <a href='#tymethod.clear_handler' class='fnname'>clear_handler</a>(&amp;mut self)</code></span></h3><div class='docblock'><p>Clears the currently handler, if one is set</p>
+</div><h3 id='tymethod.input_config' class='method'><span id='input_config.v' class='invisible'><code>fn <a href='#tymethod.input_config' class='fnname'>input_config</a>(&amp;mut self) -&gt; &amp;mut Self::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.InputConfig" title="type smithay::backend::input::InputBackend::InputConfig">InputConfig</a></code></span></h3><div class='docblock'><p>Get current <code>InputConfig</code></p>
+</div><h3 id='tymethod.dispatch_new_events' class='method'><span id='dispatch_new_events.v' class='invisible'><code>fn <a href='#tymethod.dispatch_new_events' class='fnname'>dispatch_new_events</a>(&amp;mut self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">()</a>, Self::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.EventError" title="type smithay::backend::input::InputBackend::EventError">EventError</a>&gt;</code></span></h3><div class='docblock'><p>Processes new events of the underlying backend and drives the <code>InputHandler</code>.</p>
+</div></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><code>impl InputBackend for <a class="struct" href="../../../smithay/backend/winit/struct.WinitInputBackend.html" title="struct smithay::backend::winit::WinitInputBackend">WinitInputBackend</a></code></li>
+<li><code>impl InputBackend for <a class="struct" href="../../../smithay/backend/libinput/struct.LibinputInputBackend.html" title="struct smithay::backend::libinput::LibinputInputBackend">LibinputInputBackend</a></code></li>
+</ul><script type="text/javascript" async
+                         src="../../../implementors/smithay/backend/input/trait.InputBackend.js">
+                 </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "smithay";
+    </script>
+    <script src="../../../main.js"></script>
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

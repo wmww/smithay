@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `InputHandler` trait in crate `smithay`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, InputHandler">
+
+    <title>smithay::backend::input::InputHandler - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc trait">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'>Trait InputHandler</p><div class="block items"><ul><li><a href="#required-methods">Required Methods</a></li><li><a href="#implementors">Implementors</a></li></ul></div><p class='location'><a href='../../index.html'>smithay</a>::<wbr><a href='../index.html'>backend</a>::<wbr><a href='index.html'>input</a></p><script>window.sidebarCurrent = {name: 'InputHandler', ty: 'trait', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Trait <a href='../../index.html'>smithay</a>::<wbr><a href='../index.html'>backend</a>::<wbr><a href='index.html'>input</a>::<wbr><a class="trait" href=''>InputHandler</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../../src/smithay/backend/input.rs.html#526-617' title='goto source code'>[src]</a></span></h1>
+<pre class='rust trait'>pub trait InputHandler&lt;B:&nbsp;<a class="trait" href="../../../smithay/backend/input/trait.InputBackend.html" title="trait smithay::backend::input::InputBackend">InputBackend</a>&gt; {
+    fn <a href='#tymethod.on_seat_created' class='fnname'>on_seat_created</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_seat_destroyed' class='fnname'>on_seat_destroyed</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_seat_changed' class='fnname'>on_seat_changed</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_keyboard_key' class='fnname'>on_keyboard_key</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.KeyboardKeyEvent" title="type smithay::backend::input::InputBackend::KeyboardKeyEvent">KeyboardKeyEvent</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_pointer_move' class='fnname'>on_pointer_move</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerMotionEvent" title="type smithay::backend::input::InputBackend::PointerMotionEvent">PointerMotionEvent</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_pointer_move_absolute' class='fnname'>on_pointer_move_absolute</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerMotionAbsoluteEvent" title="type smithay::backend::input::InputBackend::PointerMotionAbsoluteEvent">PointerMotionAbsoluteEvent</a><br>&nbsp;&nbsp;&nbsp;&nbsp;);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_pointer_button' class='fnname'>on_pointer_button</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerButtonEvent" title="type smithay::backend::input::InputBackend::PointerButtonEvent">PointerButtonEvent</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_pointer_axis' class='fnname'>on_pointer_axis</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerAxisEvent" title="type smithay::backend::input::InputBackend::PointerAxisEvent">PointerAxisEvent</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_touch_down' class='fnname'>on_touch_down</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchDownEvent" title="type smithay::backend::input::InputBackend::TouchDownEvent">TouchDownEvent</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_touch_motion' class='fnname'>on_touch_motion</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchMotionEvent" title="type smithay::backend::input::InputBackend::TouchMotionEvent">TouchMotionEvent</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_touch_up' class='fnname'>on_touch_up</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchUpEvent" title="type smithay::backend::input::InputBackend::TouchUpEvent">TouchUpEvent</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_touch_cancel' class='fnname'>on_touch_cancel</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchCancelEvent" title="type smithay::backend::input::InputBackend::TouchCancelEvent">TouchCancelEvent</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_touch_frame' class='fnname'>on_touch_frame</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchFrameEvent" title="type smithay::backend::input::InputBackend::TouchFrameEvent">TouchFrameEvent</a>);
+<div class='item-spacer'></div>    fn <a href='#tymethod.on_input_config_changed' class='fnname'>on_input_config_changed</a>(&amp;mut self, config: &amp;mut B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.InputConfig" title="type smithay::backend::input::InputBackend::InputConfig">InputConfig</a>);
+}</pre><div class='docblock'><p>Implement to receive input events from any <code>InputBackend</code>.</p>
+</div>
+            <h2 id='required-methods'>Required Methods</h2>
+            <div class='methods'>
+        <h3 id='tymethod.on_seat_created' class='method'><span id='on_seat_created.v' class='invisible'><code>fn <a href='#tymethod.on_seat_created' class='fnname'>on_seat_created</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>)</code></span></h3><div class='docblock'><p>Called when a new <code>Seat</code> has been created</p>
+</div><h3 id='tymethod.on_seat_destroyed' class='method'><span id='on_seat_destroyed.v' class='invisible'><code>fn <a href='#tymethod.on_seat_destroyed' class='fnname'>on_seat_destroyed</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>)</code></span></h3><div class='docblock'><p>Called when an existing <code>Seat</code> has been destroyed.</p>
+</div><h3 id='tymethod.on_seat_changed' class='method'><span id='on_seat_changed.v' class='invisible'><code>fn <a href='#tymethod.on_seat_changed' class='fnname'>on_seat_changed</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>)</code></span></h3><div class='docblock'><p>Called when a <code>Seat</code>&#39;s properties have changed.</p>
+
+<h2 id='note' class='section-header'><a href='#note'>Note:</a></h2>
+<p>It is not guaranteed that any change has actually happened.</p>
+</div><h3 id='tymethod.on_keyboard_key' class='method'><span id='on_keyboard_key.v' class='invisible'><code>fn <a href='#tymethod.on_keyboard_key' class='fnname'>on_keyboard_key</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.KeyboardKeyEvent" title="type smithay::backend::input::InputBackend::KeyboardKeyEvent">KeyboardKeyEvent</a>)</code></span></h3><div class='docblock'><p>Called when a new keyboard event was received.</p>
+
+<h1 id='arguments' class='section-header'><a href='#arguments'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - The keyboard event</li>
+</ul>
+</div><h3 id='tymethod.on_pointer_move' class='method'><span id='on_pointer_move.v' class='invisible'><code>fn <a href='#tymethod.on_pointer_move' class='fnname'>on_pointer_move</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerMotionEvent" title="type smithay::backend::input::InputBackend::PointerMotionEvent">PointerMotionEvent</a>)</code></span></h3><div class='docblock'><p>Called when a new pointer movement event was received.</p>
+
+<h1 id='arguments-1' class='section-header'><a href='#arguments-1'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - The pointer movement event</li>
+</ul>
+</div><h3 id='tymethod.on_pointer_move_absolute' class='method'><span id='on_pointer_move_absolute.v' class='invisible'><code>fn <a href='#tymethod.on_pointer_move_absolute' class='fnname'>on_pointer_move_absolute</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;mut self, <br>&nbsp;&nbsp;&nbsp;&nbsp;seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, <br>&nbsp;&nbsp;&nbsp;&nbsp;event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerMotionAbsoluteEvent" title="type smithay::backend::input::InputBackend::PointerMotionAbsoluteEvent">PointerMotionAbsoluteEvent</a><br>)</code></span></h3><div class='docblock'><p>Called when a new pointer absolute movement event was received.</p>
+
+<h1 id='arguments-2' class='section-header'><a href='#arguments-2'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - The pointer absolute movement event</li>
+</ul>
+</div><h3 id='tymethod.on_pointer_button' class='method'><span id='on_pointer_button.v' class='invisible'><code>fn <a href='#tymethod.on_pointer_button' class='fnname'>on_pointer_button</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerButtonEvent" title="type smithay::backend::input::InputBackend::PointerButtonEvent">PointerButtonEvent</a>)</code></span></h3><div class='docblock'><p>Called when a new pointer button event was received.</p>
+
+<h1 id='arguments-3' class='section-header'><a href='#arguments-3'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - The pointer button event</li>
+</ul>
+</div><h3 id='tymethod.on_pointer_axis' class='method'><span id='on_pointer_axis.v' class='invisible'><code>fn <a href='#tymethod.on_pointer_axis' class='fnname'>on_pointer_axis</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.PointerAxisEvent" title="type smithay::backend::input::InputBackend::PointerAxisEvent">PointerAxisEvent</a>)</code></span></h3><div class='docblock'><p>Called when a new pointer scroll event was received.</p>
+
+<h1 id='arguments-4' class='section-header'><a href='#arguments-4'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - A upward counting variable useful for event ordering. Makes no gurantees about actual time passed between events.</li>
+</ul>
+</div><h3 id='tymethod.on_touch_down' class='method'><span id='on_touch_down.v' class='invisible'><code>fn <a href='#tymethod.on_touch_down' class='fnname'>on_touch_down</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchDownEvent" title="type smithay::backend::input::InputBackend::TouchDownEvent">TouchDownEvent</a>)</code></span></h3><div class='docblock'><p>Called when a new touch down event was received.</p>
+
+<h1 id='arguments-5' class='section-header'><a href='#arguments-5'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - The touch down event</li>
+</ul>
+</div><h3 id='tymethod.on_touch_motion' class='method'><span id='on_touch_motion.v' class='invisible'><code>fn <a href='#tymethod.on_touch_motion' class='fnname'>on_touch_motion</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchMotionEvent" title="type smithay::backend::input::InputBackend::TouchMotionEvent">TouchMotionEvent</a>)</code></span></h3><div class='docblock'><p>Called when a new touch motion event was received.</p>
+
+<h1 id='arguments-6' class='section-header'><a href='#arguments-6'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - The touch motion event.</li>
+</ul>
+</div><h3 id='tymethod.on_touch_up' class='method'><span id='on_touch_up.v' class='invisible'><code>fn <a href='#tymethod.on_touch_up' class='fnname'>on_touch_up</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchUpEvent" title="type smithay::backend::input::InputBackend::TouchUpEvent">TouchUpEvent</a>)</code></span></h3><div class='docblock'><p>Called when a new touch up event was received.</p>
+
+<h1 id='arguments-7' class='section-header'><a href='#arguments-7'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - The touch up event.</li>
+</ul>
+</div><h3 id='tymethod.on_touch_cancel' class='method'><span id='on_touch_cancel.v' class='invisible'><code>fn <a href='#tymethod.on_touch_cancel' class='fnname'>on_touch_cancel</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchCancelEvent" title="type smithay::backend::input::InputBackend::TouchCancelEvent">TouchCancelEvent</a>)</code></span></h3><div class='docblock'><p>Called when a new touch cancel event was received.</p>
+
+<h1 id='arguments-8' class='section-header'><a href='#arguments-8'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - The touch cancel event.</li>
+</ul>
+</div><h3 id='tymethod.on_touch_frame' class='method'><span id='on_touch_frame.v' class='invisible'><code>fn <a href='#tymethod.on_touch_frame' class='fnname'>on_touch_frame</a>(&amp;mut self, seat: &amp;<a class="struct" href="../../../smithay/backend/input/struct.Seat.html" title="struct smithay::backend::input::Seat">Seat</a>, event: B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.TouchFrameEvent" title="type smithay::backend::input::InputBackend::TouchFrameEvent">TouchFrameEvent</a>)</code></span></h3><div class='docblock'><p>Called when a new touch frame event was received.</p>
+
+<h1 id='arguments-9' class='section-header'><a href='#arguments-9'>Arguments</a></h1>
+<ul>
+<li><code>seat</code> - The <code>Seat</code> the event belongs to</li>
+<li><code>event</code> - The touch frame event.</li>
+</ul>
+</div><h3 id='tymethod.on_input_config_changed' class='method'><span id='on_input_config_changed.v' class='invisible'><code>fn <a href='#tymethod.on_input_config_changed' class='fnname'>on_input_config_changed</a>(&amp;mut self, config: &amp;mut B::<a class="type" href="../../../smithay/backend/input/trait.InputBackend.html#associatedtype.InputConfig" title="type smithay::backend::input::InputBackend::InputConfig">InputConfig</a>)</code></span></h3><div class='docblock'><p>Called when the <code>InputConfig</code> was changed through an external event.</p>
+
+<p>What kind of events can trigger this call is completely backend dependent.
+E.g. an input devices was attached/detached or changed it&#39;s own configuration.</p>
+</div></div>
+        <h2 id='implementors'>Implementors</h2>
+        <ul class='item-list' id='implementors-list'>
+    <li><code>impl&lt;B:&nbsp;<a class="trait" href="../../../smithay/backend/input/trait.InputBackend.html" title="trait smithay::backend::input::InputBackend">InputBackend</a>&gt; InputHandler&lt;B&gt; for <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html" title="struct alloc::boxed::Box">Box</a>&lt;<a class="trait" href="../../../smithay/backend/input/trait.InputHandler.html" title="trait smithay::backend::input::InputHandler">InputHandler</a>&lt;B&gt;&gt;</code></li>
+</ul><script type="text/javascript" async
+                         src="../../../implementors/smithay/backend/input/trait.InputHandler.js">
+                 </script></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "smithay";
+    </script>
+    <script src="../../../main.js"></script>
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>

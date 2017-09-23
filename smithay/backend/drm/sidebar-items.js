@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["drm_device_bind","Bind a `DrmDevice` to an EventLoop,"]],"mod":[["error",""]],"struct":[["DrmBackend","Backend based on a `DrmDevice` and a given crtc"],["DrmDevice","Representation of an open drm device node to create rendering backends"]],"trait":[["DrmHandler","Handler for drm node events"]]});

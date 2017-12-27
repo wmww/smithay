@@ -101,8 +101,7 @@ impl Seat {
             known_seats: Vec::new(),
         };
         let token = evl.state().insert(seat);
-        // TODO: support version 5 (axis)
-        let global = evl.register_global(4, seat_global_bind, token.clone());
+        let global = evl.register_global(5, seat_global_bind, token.clone());
         (token, global)
     }
 

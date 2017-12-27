@@ -73,6 +73,7 @@ impl PointerHandle {
         if leave {
             guard.with_focused_pointers(|pointer, surface| {
                 pointer.leave(serial, surface);
+                pointer.frame();
             });
             guard.focus = None;
         }
@@ -83,11 +84,13 @@ impl PointerHandle {
                 guard.focus = surface.clone();
                 guard.with_focused_pointers(|pointer, surface| {
                     pointer.enter(serial, surface, x, y);
+                    pointer.frame();
                 })
             } else {
                 // we were on top of a surface and remained on it
                 guard.with_focused_pointers(|pointer, _| {
                     pointer.motion(time, x, y);
+                    pointer.frame();
                 })
             }
         }
@@ -101,6 +104,7 @@ impl PointerHandle {
         let guard = self.inner.lock().unwrap();
         guard.with_focused_pointers(|pointer, _| {
             pointer.button(serial, time, button, state);
+            pointer.frame();
         })
     }
 
@@ -109,6 +113,7 @@ impl PointerHandle {
         let guard = self.inner.lock().unwrap();
         guard.with_focused_pointers(|pointer, _| {
             pointer.axis(time, axis, value);
+            pointer.frame();
         })
     }
 

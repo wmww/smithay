@@ -91,6 +91,10 @@ impl PointerHandle {
                 })
             }
         }
+
+        guard.with_focused_pointers(|pointer, _| {
+            pointer.frame();
+        })
     }
 
     /// Notify that a button was pressed
@@ -101,6 +105,7 @@ impl PointerHandle {
         let guard = self.inner.lock().unwrap();
         guard.with_focused_pointers(|pointer, _| {
             pointer.button(serial, time, button, state);
+            pointer.frame();
         })
     }
 
@@ -109,6 +114,7 @@ impl PointerHandle {
         let guard = self.inner.lock().unwrap();
         guard.with_focused_pointers(|pointer, _| {
             pointer.axis(time, axis, value);
+            pointer.frame();
         })
     }
 

@@ -102,8 +102,7 @@ impl Seat {
             known_seats: Vec::new(),
         };
         let token = evl.state().insert(seat);
-        // TODO: support version 5 (axis)
-        let global = evl.register_global(4, seat_global_bind, token.clone());
+        let global = evl.register_global(6, seat_global_bind, token.clone());
         (token, global)
     }
 
@@ -263,7 +262,9 @@ fn seat_implementation() -> wl_seat::Implementation<StateToken<Seat>> {
         get_touch: |_evlh, _token, _, _, _touch| {
             // TODO
         },
-        release: |_, _, _, _| {},
+        release: |_, _, _, _| {
+            // TODO
+        },
     }
 }
 

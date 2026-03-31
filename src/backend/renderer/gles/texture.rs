@@ -40,6 +40,33 @@ impl GlesTexture {
         }))
     }
 
+    /// Create a [`GlesTexture`] from a raw GL texture id with full control over flags.
+    ///
+    /// Like [`from_raw`](Self::from_raw) but allows setting `is_external` and `y_inverted`.
+    /// Use `is_external: true` for textures backed by `GL_TEXTURE_EXTERNAL_OES`
+    /// (e.g. Android AHardwareBuffer imports).
+    pub unsafe fn from_raw_with_flags(
+        renderer: &GlesRenderer,
+        internal_format: Option<ffi::types::GLenum>,
+        opaque: bool,
+        is_external: bool,
+        y_inverted: bool,
+        tex: ffi::types::GLuint,
+        size: Size<i32, BufferCoord>,
+    ) -> GlesTexture {
+        GlesTexture(Arc::new(GlesTextureInternal {
+            texture: tex,
+            sync: RwLock::default(),
+            format: internal_format,
+            has_alpha: !opaque,
+            is_external,
+            y_inverted,
+            size,
+            egl_images: None,
+            destruction_callback_sender: renderer.gles_cleanup().sender.clone(),
+        }))
+    }
+
     /// OpenGL texture id of this texture
     ///
     /// This id will become invalid, when the GlesTexture is dropped and does not transfer ownership.

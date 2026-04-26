@@ -29,6 +29,11 @@ pub struct EGLContext {
     pixel_format: Option<PixelFormat>,
     user_data: Arc<UserDataMap>,
     externally_managed: bool,
+    /// Fallback 1x1 pbuffer used by [`EGLContext::make_current`] on drivers
+    /// without `EGL_KHR_surfaceless_context` (e.g. Android's gfxstream).
+    /// `NO_SURFACE` if surfaceless is supported or no pbuffer-capable
+    /// config was provided.
+    dummy_pbuffer: ffi::egl::types::EGLSurface,
     pub(crate) span: tracing::Span,
 }
 
@@ -104,6 +109,8 @@ impl EGLContext {
 
         let span = info_span!(parent: &display.span, "egl_context", ptr = context as usize);
 
+        let dummy_pbuffer = make_surfaceless_fallback_pbuffer(&display, config_id);
+
         Ok(EGLContext {
             context,
             display,
@@ -111,6 +118,7 @@ impl EGLContext {
             pixel_format: Some(pixel_format),
             user_data: Arc::new(UserDataMap::default()),
             externally_managed: true,
+            dummy_pbuffer,
             span,
         })
     }
@@ -336,6 +344,8 @@ impl EGLContext {
 
         info!(priority = ?context_priority, "EGL context created");
 
+        let dummy_pbuffer = make_surfaceless_fallback_pbuffer(display, config_id);
+
         drop(_guard);
         Ok(EGLContext {
             context,
@@ -348,6 +358,7 @@ impl EGLContext {
                 Arc::new(UserDataMap::default())
             },
             externally_managed: false,
+            dummy_pbuffer,
             span,
         })
     }
@@ -364,8 +375,8 @@ impl EGLContext {
         wrap_egl_call_bool(|| unsafe {
             ffi::egl::MakeCurrent(
                 **self.display.get_display_handle(),
-                ffi::egl::NO_SURFACE,
-                ffi::egl::NO_SURFACE,
+                self.dummy_pbuffer,
+                self.dummy_pbuffer,
                 self.context,
             )
         })
@@ -486,6 +497,47 @@ impl EGLContext {
     }
 }
 
+/// Drivers without `EGL_KHR_surfaceless_context` (e.g. Android's gfxstream)
+/// reject `MakeCurrent(NO_SURFACE, NO_SURFACE)` with `EGL_BAD_MATCH`. When
+/// that's the case, allocate a tiny pbuffer up-front so
+/// [`EGLContext::make_current`] has something valid to bind. Pbuffer
+/// creation may fail (e.g. config doesn't have `EGL_PBUFFER_BIT`); that's
+/// fine — surfaceless was already unsupported and we just preserve
+/// today's failure mode.
+fn make_surfaceless_fallback_pbuffer(
+    display: &EGLDisplay,
+    config_id: ffi::egl::types::EGLConfig,
+) -> ffi::egl::types::EGLSurface {
+    if config_id == ffi::egl::NO_CONFIG_KHR
+        || display
+            .extensions()
+            .iter()
+            .any(|x| x == "EGL_KHR_surfaceless_context")
+    {
+        return ffi::egl::NO_SURFACE;
+    }
+    let attribs: [i32; 5] = [
+        ffi::egl::WIDTH as i32,
+        1,
+        ffi::egl::HEIGHT as i32,
+        1,
+        ffi::egl::NONE as i32,
+    ];
+    let surface = unsafe {
+        ffi::egl::CreatePbufferSurface(
+            **display.get_display_handle(),
+            config_id,
+            attribs.as_ptr(),
+        )
+    };
+    if surface == ffi::egl::NO_SURFACE {
+        warn!("EGL_KHR_surfaceless_context unsupported and pbuffer fallback failed; surfaceless make_current will error");
+    } else {
+        info!("Using 1x1 pbuffer as surfaceless fallback (no EGL_KHR_surfaceless_context)");
+    }
+    surface
+}
+
 impl Drop for EGLContext {
     fn drop(&mut self) {
         if !self.externally_managed {
@@ -495,6 +547,12 @@ impl Drop for EGLContext {
                 // ignore failures at this point
                 let _ = self.unbind();
                 ffi::egl::DestroyContext(**self.display.get_display_handle(), self.context);
+                if self.dummy_pbuffer != ffi::egl::NO_SURFACE {
+                    ffi::egl::DestroySurface(
+                        **self.display.get_display_handle(),
+                        self.dummy_pbuffer,
+                    );
+                }
             }
         }
     }

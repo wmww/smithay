@@ -143,6 +143,14 @@ impl XWayland {
             .arg("-verbose")
             .arg("-rootless")
             .arg("-terminate")
+            // tawc-fork: turn off auth. The compositor and Xwayland
+            // both run as the Android app uid, but X clients launched
+            // via the chroot run as root (su+chroot inherits uid). The
+            // SO_PEERCRED check inside Xwayland would otherwise reject
+            // those connections. There's no real privilege boundary
+            // either way — only the app's own clients can reach the
+            // socket because it lives in the app's private data dir.
+            .arg("-ac")
             .arg("-wm")
             .arg(x_wm_x11.as_raw_fd().to_string())
             .arg("-displayfd")

@@ -7,6 +7,14 @@ use tracing::{debug, info, warn};
 
 use rustix::{io::Errno, net::SocketAddrUnix};
 
+/// Where to put `.X{n}-lock` and `.X11-unix/X{n}`. Honors the
+/// `TAWC_XWL_RUNTIME_DIR` env var (so the tawc compositor can move the
+/// X11 sockets off `/tmp`, which doesn't exist on Android), and falls
+/// back to `/tmp` for every other environment.
+fn xwl_runtime_dir() -> String {
+    std::env::var("TAWC_XWL_RUNTIME_DIR").unwrap_or_else(|_| "/tmp".to_string())
+}
+
 /// Find a free X11 display slot and setup
 pub(crate) fn prepare_x11_sockets(
     display: Option<u32>,
@@ -53,7 +61,7 @@ impl X11Lock {
     /// Try to grab a lockfile for given X display number
     fn grab(number: u32) -> Result<X11Lock, ()> {
         debug!(display = number, "Attempting to acquire an X11 display lock");
-        let filename = format!("/tmp/.X{number}-lock");
+        let filename = format!("{}/.X{number}-lock", xwl_runtime_dir());
         let lockfile = ::std::fs::OpenOptions::new()
             .write(true)
             .create_new(true)
@@ -124,10 +132,11 @@ impl Drop for X11Lock {
     fn drop(&mut self) {
         info!("Cleaning up X11 lock.");
         // Cleanup all the X11 files
-        if let Err(e) = ::std::fs::remove_file(format!("/tmp/.X11-unix/X{}", self.display)) {
+        let dir = xwl_runtime_dir();
+        if let Err(e) = ::std::fs::remove_file(format!("{}/.X11-unix/X{}", dir, self.display)) {
             warn!(error = ?e, "Failed to remove X11 socket");
         }
-        if let Err(e) = ::std::fs::remove_file(format!("/tmp/.X{}-lock", self.display)) {
+        if let Err(e) = ::std::fs::remove_file(format!("{}/.X{}-lock", dir, self.display)) {
             warn!(error = ?e, "Failed to remove X11 lockfile");
         }
     }
@@ -141,7 +150,7 @@ fn open_x11_sockets_for_display(
     display: u32,
     open_abstract_socket: bool,
 ) -> rustix::io::Result<Vec<UnixStream>> {
-    let path = format!("/tmp/.X11-unix/X{display}");
+    let path = format!("{}/.X11-unix/X{display}", xwl_runtime_dir());
     let _ = ::std::fs::remove_file(&path);
     // We know this path is not too long, these unwrap cannot fail
     let fs_addr = SocketAddrUnix::new(path.as_bytes()).unwrap();
@@ -161,7 +170,7 @@ fn open_x11_sockets_for_display(
     display: u32,
     _open_abstract_socket: bool,
 ) -> rustix::io::Result<Vec<UnixStream>> {
-    let path = format!("/tmp/.X11-unix/X{}", display);
+    let path = format!("{}/.X11-unix/X{}", xwl_runtime_dir(), display);
     let _ = ::std::fs::remove_file(&path);
     // We know this path is not too long, these unwrap cannot fail
     let fs_addr = SocketAddrUnix::new(path.as_bytes()).unwrap();

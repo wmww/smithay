@@ -20,7 +20,9 @@ use std::{
 };
 
 #[cfg(feature = "wayland_frontend")]
-use crate::wayland::{compositor::SurfaceData, shm::fourcc_to_shm_format};
+use crate::wayland::shm::fourcc_to_shm_format;
+#[cfg(feature = "wayland_frontend")]
+use crate::wayland::compositor::SurfaceData;
 #[cfg(feature = "wayland_frontend")]
 use wayland_server::protocol::{wl_buffer, wl_shm};
 
@@ -55,6 +57,11 @@ pub mod multigpu;
 pub mod utils;
 
 pub mod element;
+
+#[cfg(feature = "wayland_frontend")]
+mod external;
+#[cfg(feature = "wayland_frontend")]
+pub use self::external::*;
 
 pub mod damage;
 
@@ -446,6 +453,17 @@ pub trait Renderer: RendererSuper {
     fn cleanup_texture_cache(&mut self) -> Result<(), Self::Error> {
         Ok(())
     }
+
+    /// Import a compositor-provided custom `wl_buffer`, if this renderer supports it.
+    #[cfg(feature = "wayland_frontend")]
+    fn import_external_buffer(
+        &mut self,
+        _buffer: &wl_buffer::WlBuffer,
+        _surface: Option<&SurfaceData>,
+        _damage: &[Rectangle<i32, BufferCoord>],
+    ) -> Option<Result<Self::TextureId, Self::Error>> {
+        None
+    }
 }
 
 /// Trait for renderers that support creating offscreen framebuffers to render into.
@@ -703,6 +721,7 @@ impl<R: Renderer + ImportMemWl + ImportEgl + ImportDmaWl> ImportAll for R {
         damage: &[Rectangle<i32, BufferCoord>],
     ) -> Option<Result<Self::TextureId, Self::Error>> {
         match buffer_type(buffer) {
+            Some(BufferType::External) => self.import_external_buffer(buffer, surface, damage),
             Some(BufferType::Shm) => Some(self.import_shm_buffer(buffer, surface, damage)),
             Some(BufferType::Egl) => Some(self.import_egl_buffer(buffer, surface, damage)),
             Some(BufferType::Dma) => Some(self.import_dma_buffer(buffer, surface, damage)),
@@ -723,6 +742,7 @@ impl<R: Renderer + ImportMemWl + ImportDmaWl> ImportAll for R {
         damage: &[Rectangle<i32, BufferCoord>],
     ) -> Option<Result<Self::TextureId, Self::Error>> {
         match buffer_type(buffer) {
+            Some(BufferType::External) => self.import_external_buffer(buffer, surface, damage),
             Some(BufferType::Shm) => Some(self.import_shm_buffer(buffer, surface, damage)),
             Some(BufferType::Dma) => Some(self.import_dma_buffer(buffer, surface, damage)),
             _ => None,
@@ -872,6 +892,8 @@ where
 /// Buffer type of a given wl_buffer, if managed by smithay
 #[derive(Debug)]
 pub enum BufferType {
+    /// Buffer is managed by compositor-provided external buffer data
+    External,
     /// Buffer is managed by the [`crate::wayland::shm`] global
     Shm,
     #[cfg(all(feature = "backend_egl", feature = "use_system_lib"))]
@@ -890,6 +912,10 @@ pub enum BufferType {
 #[cfg(feature = "wayland_frontend")]
 pub fn buffer_type(buffer: &wl_buffer::WlBuffer) -> Option<BufferType> {
     use crate::wayland::shm::BufferAccessError;
+
+    if external_buffer(buffer).is_some() {
+        return Some(BufferType::External);
+    }
 
     if crate::wayland::dmabuf::get_dmabuf(buffer).is_ok() {
         return Some(BufferType::Dma);
@@ -934,6 +960,10 @@ pub fn buffer_has_alpha(buffer: &wl_buffer::WlBuffer) -> Option<bool> {
     use super::allocator::format::has_alpha;
     use crate::wayland::shm::shm_format_to_fourcc;
 
+    if let Some(buffer) = external_buffer(buffer) {
+        return buffer.has_alpha();
+    }
+
     if let Ok(dmabuf) = crate::wayland::dmabuf::get_dmabuf(buffer) {
         return Some(crate::backend::allocator::format::has_alpha(dmabuf.0.format));
     }
@@ -974,6 +1004,10 @@ pub fn buffer_dimensions(buffer: &wl_buffer::WlBuffer) -> Option<Size<i32, Buffe
         wayland::shm::{self, BufferAccessError},
     };
 
+    if let Some(buffer) = external_buffer(buffer) {
+        return Some(buffer.dimensions());
+    }
+
     if let Ok(buf) = crate::wayland::dmabuf::get_dmabuf(buffer) {
         return Some((buf.width() as i32, buf.height() as i32).into());
     }
@@ -1011,6 +1045,10 @@ pub fn buffer_dimensions(buffer: &wl_buffer::WlBuffer) -> Option<Size<i32, Buffe
 #[cfg(feature = "wayland_frontend")]
 #[profiling::function]
 pub fn buffer_y_inverted(buffer: &wl_buffer::WlBuffer) -> Option<bool> {
+    if let Some(buffer) = external_buffer(buffer) {
+        return buffer.y_inverted();
+    }
+
     if let Ok(dmabuf) = crate::wayland::dmabuf::get_dmabuf(buffer) {
         return Some(dmabuf.y_inverted());
     }

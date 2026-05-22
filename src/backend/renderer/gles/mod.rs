@@ -2188,6 +2188,18 @@ impl Renderer for GlesRenderer {
         self.debug_flags
     }
 
+    #[cfg(feature = "wayland_frontend")]
+    fn import_external_buffer(
+        &mut self,
+        buffer: &wl_buffer::WlBuffer,
+        surface: Option<&crate::wayland::compositor::SurfaceData>,
+        damage: &[Rectangle<i32, BufferCoord>],
+    ) -> Option<Result<GlesTexture, GlesError>> {
+        super::external_buffer(buffer)
+            .and_then(|buffer| buffer.import_gles(self, surface, damage))
+            .map(|result| result.map_err(GlesError::ExternalBufferImportError))
+    }
+
     #[profiling::function]
     fn render<'frame, 'buffer>(
         &'frame mut self,

@@ -681,6 +681,10 @@ impl<A: GraphicsApi> GpuManager<A> {
                 // we just need to upload in import_shm_buffer
                 Ok(())
             }
+            Some(BufferType::External) => {
+                // compositor-provided buffers do their own renderer-specific import
+                Ok(())
+            }
             Some(BufferType::SinglePixel) => {
                 // no need to do anything
                 Ok(())
@@ -1172,6 +1176,25 @@ where
     }
     fn debug_flags(&self) -> DebugFlags {
         self.render.renderer().debug_flags()
+    }
+
+    #[cfg(feature = "wayland_frontend")]
+    fn import_external_buffer(
+        &mut self,
+        buffer: &wl_buffer::WlBuffer,
+        surface: Option<&SurfaceData>,
+        damage: &[Rectangle<i32, BufferCoords>],
+    ) -> Option<Result<MultiTexture, Self::Error>> {
+        let render_id = self.render.renderer().context_id();
+        let texture = self
+            .render
+            .renderer_mut()
+            .import_external_buffer(buffer, surface, damage)?;
+
+        let texture = texture
+            .map(|texture| MultiTexture::from_imported_external::<R>(surface, &render_id, texture))
+            .map_err(Error::Render);
+        Some(texture)
     }
 
     #[instrument(level = "trace", parent = &self.span, skip(self, framebuffer))]
@@ -1732,6 +1755,25 @@ impl MultiTexture {
             format: None,
             buffer_format,
         })))
+    }
+
+    #[cfg(feature = "wayland_frontend")]
+    fn from_imported_external<A: GraphicsApi + 'static>(
+        surface: Option<&SurfaceData>,
+        render_id: &ContextId<<<A::Device as ApiDevice>::Renderer as RendererSuper>::TextureId>,
+        texture: <<A::Device as ApiDevice>::Renderer as RendererSuper>::TextureId,
+    ) -> MultiTexture
+    where
+        <<A::Device as ApiDevice>::Renderer as RendererSuper>::TextureId: 'static,
+    {
+        let size = texture.size();
+        let buffer_format = Format {
+            code: texture.format().unwrap_or(Fourcc::Abgr8888),
+            modifier: Modifier::Invalid,
+        };
+        let mut multi_texture = MultiTexture::from_surface(surface, size, buffer_format);
+        multi_texture.insert_texture::<A>(render_id, texture);
+        multi_texture
     }
 
     /// Attempt to get a texture of type `T: Renderer::TextureId` given the renderer type `A` for the given `DrmNode`.
@@ -3381,6 +3423,25 @@ where
 
     fn debug_flags(&self) -> DebugFlags {
         self.guard.as_ref().debug_flags()
+    }
+
+    #[cfg(feature = "wayland_frontend")]
+    fn import_external_buffer(
+        &mut self,
+        buffer: &wl_buffer::WlBuffer,
+        surface: Option<&SurfaceData>,
+        damage: &[Rectangle<i32, BufferCoords>],
+    ) -> Option<Result<MultiTexture, Self::Error>> {
+        let render_id = self.guard.as_ref().context_id();
+        let texture = self
+            .guard
+            .as_mut()
+            .import_external_buffer(buffer, surface, damage)?;
+
+        let texture = texture
+            .map(|texture| MultiTexture::from_imported_external::<R>(surface, &render_id, texture))
+            .map_err(Error::Render);
+        Some(texture)
     }
 
     fn render<'newframe, 'newbuffer>(

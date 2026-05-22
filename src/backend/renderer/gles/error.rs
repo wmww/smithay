@@ -59,6 +59,10 @@ pub enum GlesError {
     #[error("Error accessing the buffer ({0:?})")]
     #[cfg(feature = "wayland_frontend")]
     EGLBufferAccessError(crate::backend::egl::BufferAccessError),
+    /// A compositor-provided external buffer could not be imported.
+    #[error("Error importing external buffer: {0}")]
+    #[cfg(feature = "wayland_frontend")]
+    ExternalBufferImportError(Box<dyn std::error::Error + Send + Sync>),
     /// There was an error mapping the buffer
     #[error("Error mapping the buffer")]
     MappingError,
@@ -109,6 +113,7 @@ impl From<GlesError> for SwapBuffersError {
             | x @ GlesError::UnsupportedWlPixelFormat(_)
             | x @ GlesError::UnsupportedPixelLayout
             | x @ GlesError::BufferAccessError(_)
+            | x @ GlesError::ExternalBufferImportError(_)
             | x @ GlesError::MappingError
             | x @ GlesError::UnexpectedSize
             | x @ GlesError::UnknownSize

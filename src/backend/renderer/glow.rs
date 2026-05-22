@@ -256,6 +256,18 @@ impl Renderer for GlowRenderer {
         self.gl.as_ref().debug_flags()
     }
 
+    #[cfg(feature = "wayland_frontend")]
+    fn import_external_buffer(
+        &mut self,
+        buffer: &wl_buffer::WlBuffer,
+        surface: Option<&crate::wayland::compositor::SurfaceData>,
+        damage: &[Rectangle<i32, BufferCoord>],
+    ) -> Option<Result<GlesTexture, GlesError>> {
+        self.gl
+            .as_mut()
+            .import_external_buffer(buffer, surface, damage)
+    }
+
     #[profiling::function]
     fn render<'frame, 'buffer>(
         &'frame mut self,

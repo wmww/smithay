@@ -1,9 +1,9 @@
 use std::{
     env,
     ffi::OsStr,
-    os::fd::{BorrowedFd, OwnedFd},
+    os::fd::{AsRawFd, BorrowedFd, OwnedFd},
     os::unix::{
-        io::{AsRawFd, RawFd},
+        io::RawFd,
         net::UnixStream,
         process::CommandExt,
     },
@@ -85,7 +85,43 @@ pub enum XWaylandEvent {
     Error,
 }
 
+/// A prepared X11 display socket set that can be passed to Xwayland later.
+///
+/// This lets compositors expose `DISPLAY=:N` without starting the Xwayland
+/// process until a client connects to the listening socket.
+#[derive(Debug)]
+pub struct XWaylandActivation {
+    display_lock: X11Lock,
+    listen_sockets: Vec<UnixStream>,
+}
+
+impl XWaylandActivation {
+    /// Returns the X11 display number reserved by this activation handle.
+    pub fn display_number(&self) -> u32 {
+        self.display_lock.display_number()
+    }
+
+    /// Returns a listening X11 socket fd suitable for polling for activation.
+    pub fn poll_fd(&self) -> BorrowedFd<'_> {
+        // SAFETY: the fd belongs to self.listen_sockets and lives as long as self.
+        unsafe { BorrowedFd::borrow_raw(self.listen_sockets[0].as_raw_fd()) }
+    }
+}
+
 impl XWayland {
+    /// Prepare X11 listening sockets without starting the Xwayland process.
+    pub fn prepare_lazy(
+        display: impl Into<Option<u32>>,
+        open_abstract_socket: bool,
+    ) -> std::io::Result<XWaylandActivation> {
+        let (display_lock, listen_sockets) =
+            prepare_x11_sockets(display.into(), open_abstract_socket)?;
+        Ok(XWaylandActivation {
+            display_lock,
+            listen_sockets,
+        })
+    }
+
     /// Spawns an XWayland server instance. `Xwayland` must be on the `PATH` and
     /// executable.
     ///
@@ -124,11 +160,30 @@ impl XWayland {
         V: AsRef<OsStr>,
         F: FnOnce(&UserDataMap),
     {
+        let activation = Self::prepare_lazy(display, open_abstract_socket)?;
+        Self::spawn_with_activation(dh, activation, envs, stdout, stderr, user_data)
+    }
+
+    /// Spawns an XWayland server using a previously prepared X11 socket set.
+    pub fn spawn_with_activation<K, V, I, F>(
+        dh: &DisplayHandle,
+        activation: XWaylandActivation,
+        envs: I,
+        stdout: impl Into<std::process::Stdio>,
+        stderr: impl Into<std::process::Stdio>,
+        user_data: F,
+    ) -> std::io::Result<(Self, Client)>
+    where
+        I: IntoIterator<Item = (K, V)>,
+        K: AsRef<OsStr>,
+        V: AsRef<OsStr>,
+        F: FnOnce(&UserDataMap),
+    {
         let (x_wm_x11, x_wm_me) = UnixStream::pair()?;
         let (wl_x11, wl_me) = UnixStream::pair()?;
 
-        let (lock, listen_sockets) = prepare_x11_sockets(display.into(), open_abstract_socket)?;
-        let display_number = lock.display_number();
+        let display_number = activation.display_lock.display_number();
+        let listen_sockets = activation.listen_sockets;
 
         // XWayland writes the the display number and a newline to this pipe when it's ready.
         let (displayfd_recv, displayfd_send) =
@@ -143,6 +198,7 @@ impl XWayland {
             .arg("-verbose")
             .arg("-rootless")
             .arg("-terminate")
+            .arg("5")
             // tawc-fork: turn off auth. The compositor and Xwayland
             // both run as the Android app uid, but X clients launched
             // via the chroot run as root (su+chroot inherits uid). The
@@ -200,7 +256,7 @@ impl XWayland {
         let wrapper = unsafe { calloop::generic::FdWrapper::new(displayfd_recv.as_raw_fd()) };
         let source = calloop::generic::Generic::new(wrapper, calloop::Interest::READ, calloop::Mode::Level);
         let inner = Instance {
-            display_lock: lock,
+            display_lock: activation.display_lock,
             display_fd: displayfd_recv,
             x11_socket: Some(x_wm_me),
         };

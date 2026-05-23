@@ -165,7 +165,7 @@ use x11rb::{
         randr::{ConnectionExt as _, Notify, NotifyMask},
         render::{ConnectionExt as _, CreatePictureAux, PictureWrapper},
         sync::{ConnectionExt as _, Counter},
-        xfixes::ConnectionExt as _,
+        xfixes::{ClientDisconnectFlags, ConnectionExt as _},
         xproto::{
             AtomEnum, CONFIGURE_NOTIFY_EVENT, ChangeWindowAttributesAux, Colormap, ColormapAlloc,
             ConfigWindow, ConfigureNotifyEvent, ConfigureWindowAux, ConnectionExt, CreateGCAux,
@@ -986,7 +986,14 @@ impl X11Wm {
         if !_xfixes_data.present {
             return Err(ConnectionError::UnsupportedExtension.into());
         }
-        conn.xfixes_query_version(1, 0)?.reply_unchecked()?; // we just need version 1 for clipboard monitoring
+        let xfixes_version = conn
+            .xfixes_query_version(6, 0)?
+            .reply_unchecked()?
+            .ok_or(ConnectionError::UnsupportedExtension)?;
+        if xfixes_version.major_version >= 6 {
+            conn.xfixes_set_client_disconnect_mode(ClientDisconnectFlags::TERMINATE)?
+                .check()?;
+        }
 
         let clipboard = XWmSelection::new(&conn, &screen, &atoms, atoms.CLIPBOARD)?;
         let primary = XWmSelection::new(&conn, &screen, &atoms, atoms.PRIMARY)?;

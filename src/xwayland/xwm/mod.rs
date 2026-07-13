@@ -136,7 +136,7 @@ use crate::{
     },
 };
 use atomic_float::AtomicF64;
-use calloop::{Interest, LoopHandle, Mode, PostAction, generic::Generic, ping};
+use calloop::{Interest, LoopHandle, Mode, PostAction, RegistrationToken, generic::Generic, ping};
 use rustix::fs::OFlags;
 use std::{
     cell::RefCell,
@@ -597,12 +597,45 @@ pub struct X11Wm {
 
     pub(super) focus_release: FocusReleaseHandle,
 
+    event_source_tokens: Vec<RegistrationToken>,
+    remove_source: SourceRemover,
+
     span: tracing::Span,
+}
+
+/// Type-erased `LoopHandle::remove`, so `X11Wm` can deregister its sources
+/// without being generic over the event loop's state type.
+struct SourceRemover(Box<dyn Fn(RegistrationToken)>);
+
+impl std::fmt::Debug for SourceRemover {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("SourceRemover")
+    }
 }
 
 impl Drop for X11Wm {
     fn drop(&mut self) {
         xwm_id::remove(self.id.0);
+
+        // Remove our sources from the event loop. Registered callbacks capture
+        // `LoopHandle` clones, and `LoopHandle` is a strong Rc into the loop's
+        // source list, so leaving them registered keeps the whole loop (and
+        // everything other sources capture) alive after the loop is dropped.
+        for token in self.event_source_tokens.drain(..) {
+            (self.remove_source.0)(token);
+        }
+        for selection in [&mut self.clipboard, &mut self.primary, &mut self.dnd.selection] {
+            for transfer in selection.incoming.values_mut() {
+                if let Some(token) = transfer.token.take() {
+                    (self.remove_source.0)(token);
+                }
+            }
+            for transfer in selection.outgoing.values_mut() {
+                if let Some(token) = transfer.token.take() {
+                    (self.remove_source.0)(token);
+                }
+            }
+        }
 
         // Break reference cycle caused by deferred_sync hook
         for window in std::mem::take(&mut self.windows) {
@@ -1001,13 +1034,13 @@ impl X11Wm {
         let wm_window = OwnedX11Window::new(win, &conn);
 
         let (focus_release, focus_release_source) = FocusReleaseHandle::new(&conn)?;
-        {
+        let focus_release_token = {
             let release = focus_release.clone();
-            handle.insert_source(focus_release_source, move |_, _, _| release.dispatch())?;
-        }
+            handle.insert_source(focus_release_source, move |_, _, _| release.dispatch())?
+        };
 
         drop(_guard);
-        let wm = Self {
+        let mut wm = Self {
             id,
             conn,
             client_scale,
@@ -1029,12 +1062,17 @@ impl X11Wm {
             client_list_stacking: Vec::new(),
             is_showing_desktop: false,
             focus_release,
+            event_source_tokens: vec![focus_release_token],
+            remove_source: SourceRemover(Box::new({
+                let handle = handle.clone();
+                move |token| handle.remove(token)
+            })),
             span,
         };
 
         let event_handle = handle.clone();
         let dh = dh.clone();
-        handle.insert_source(source, move |event, _, data| match event {
+        let event_source_token = handle.insert_source(source, move |event, _, data| match event {
             calloop::channel::Event::Msg(event) => {
                 if let Err(err) = handle_event(&event_handle, &dh, data, id, event) {
                     warn!(id = id.0, err = ?err, "Failed to handle X11 event");
@@ -1044,6 +1082,7 @@ impl X11Wm {
                 data.disconnected(id);
             }
         })?;
+        wm.event_source_tokens.push(event_source_token);
         Ok(wm)
     }
 

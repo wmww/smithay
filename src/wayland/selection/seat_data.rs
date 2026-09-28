@@ -197,7 +197,7 @@ impl<U: Clone + Send + Sync + 'static> SeatData<U> {
                         None => continue,
                     };
 
-                    let offer = SelectionOffer::new::<D>(dh, device, client_id, selection.clone());
+                    let offer = SelectionOffer::new::<D>(dh, device, client_id, ty, selection.clone());
 
                     device.offer(&offer);
 

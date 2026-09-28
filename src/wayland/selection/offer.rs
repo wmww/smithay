@@ -24,7 +24,7 @@ use zwp_primary_selection_offer_v1::Request as PrimaryRequest;
 
 use crate::input::Seat;
 
-use super::SelectionHandler;
+use super::{SelectionHandler, SelectionTarget};
 use super::device::{DataDeviceKind, SelectionDevice};
 use super::private::selection_dispatch;
 use super::source::{CompositorSelectionProvider, SelectionSourceProvider};
@@ -69,6 +69,7 @@ impl SelectionOffer {
         dh: &DisplayHandle,
         device: &SelectionDevice,
         client_id: ClientId,
+        ty: SelectionTarget,
         data: OfferReplySource<D::SelectionUserData>,
     ) -> Self
     where
@@ -80,6 +81,7 @@ impl SelectionOffer {
         let device_kind = device.device_kind();
         let data = Arc::new(OfferReplyData {
             device_kind,
+            ty,
             seat: device.seat(),
             source: data,
         });
@@ -115,6 +117,7 @@ impl SelectionOffer {
 
 struct OfferReplyData<U: Clone + Send + Sync + 'static> {
     device_kind: DataDeviceKind,
+    ty: SelectionTarget,
     source: OfferReplySource<U>,
     seat: WlSeat,
 }
@@ -131,6 +134,7 @@ where
         msg: Message<ObjectId, OwnedFd>,
     ) -> Option<Arc<dyn ObjectData<D>>> {
         let dh = DisplayHandle::from(dh.clone());
+        let offer_id = msg.sender_id.clone();
 
         // NOTE: we can't parse message more than once, since it expects the `OwnedFd` which
         // we can't clone. To achieve that, we use RTTI passed along the selection data, to
@@ -174,8 +178,19 @@ where
             }
         };
 
+        let data_control = matches!(
+            self.device_kind,
+            DataDeviceKind::WlrDataControl | DataDeviceKind::ExtDataControl
+        );
+
         if !self.source.contains_mime_type(&mime_type) {
             debug!("Denying a {object_name}.receive with invalid mime type");
+        } else if data_control
+            && !dh
+                .get_client(offer_id)
+                .is_ok_and(|client| handle.allow_data_control_read(self.ty, &client))
+        {
+            debug!("Denying a {object_name}.receive refused by the compositor");
         } else {
             match &self.source {
                 OfferReplySource::Client(source) => {

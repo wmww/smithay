@@ -13,6 +13,8 @@
 
 use std::os::unix::io::OwnedFd;
 
+use wayland_server::Client;
+
 use crate::input::{Seat, SeatHandler};
 
 pub mod data_device;
@@ -49,6 +51,16 @@ pub trait SelectionHandler: Sized + SeatHandler {
         seat: Seat<Self>,
         user_data: &Self::SelectionUserData,
     ) {
+    }
+
+    /// A data-control client asked to read the selection, whoever owns it.
+    ///
+    /// Data-control offers need no keyboard focus, so this is the only
+    /// point where such reads can be refused. Returning `false` closes the
+    /// fd without transferring anything.
+    #[allow(unused_variables)]
+    fn allow_data_control_read(&mut self, ty: SelectionTarget, client: &Client) -> bool {
+        true
     }
 }
 

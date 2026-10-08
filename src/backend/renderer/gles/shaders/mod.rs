@@ -114,6 +114,40 @@ pub unsafe fn link_program(
     Ok(program)
 }
 
+/// Drop `#if defined(X)` / `#else` / `#endif` branches disabled for this
+/// variant before the source reaches the driver. The Android emulator's GL
+/// translator scans shader text without preprocessing, so a dead
+/// `uniform samplerExternalOES tex;` makes it sample `tex` as external
+/// (constant black). A no-op on conforming drivers.
+fn strip_disabled_branches(src: &str, defines: &[&str]) -> String {
+    let mut out = String::new();
+    let mut stack: Vec<bool> = Vec::new();
+    for line in src.lines() {
+        let t = line.trim();
+        if let Some(name) = t.strip_prefix("#if defined(").and_then(|r| r.strip_suffix(')')) {
+            stack.push(defines.contains(&name));
+            continue;
+        }
+        match t {
+            "#else" if !stack.is_empty() => {
+                let top = stack.last_mut().unwrap();
+                *top = !*top;
+                continue;
+            }
+            "#endif" if !stack.is_empty() => {
+                stack.pop();
+                continue;
+            }
+            _ => {}
+        }
+        if stack.iter().all(|enabled| *enabled) {
+            out.push_str(line);
+            out.push('\n');
+        }
+    }
+    out
+}
+
 pub(super) unsafe fn texture_program(
     gl: &ffi::Gles2,
     src: &str,
@@ -121,23 +155,18 @@ pub(super) unsafe fn texture_program(
     destruction_callback_sender: Sender<CleanupResource>,
 ) -> Result<GlesTexProgram, GlesError> {
     let create_variant = |defines: &[&str]| -> Result<GlesTexProgramVariant, GlesError> {
-        let shader = src.replace(
-            "//_DEFINES_",
-            &defines.iter().fold(String::new(), |mut shader, define| {
-                let _ = writeln!(&mut shader, "#define {define}");
-                shader
-            }),
-        );
-        let debug_shader = src.replace(
-            "//_DEFINES_",
-            &defines
-                .iter()
-                .chain(&[shaders::DEBUG_FLAGS])
-                .fold(String::new(), |mut shader, define| {
-                    let _ = writeln!(shader, "#define {define}");
+        let expand = |defines: &[&str]| {
+            let shader = src.replace(
+                "//_DEFINES_",
+                &defines.iter().fold(String::new(), |mut shader, define| {
+                    let _ = writeln!(&mut shader, "#define {define}");
                     shader
                 }),
-        );
+            );
+            strip_disabled_branches(&shader, defines)
+        };
+        let shader = expand(defines);
+        let debug_shader = expand(&[defines, &[shaders::DEBUG_FLAGS]].concat());
 
         let program = unsafe { link_program(gl, shaders::VERTEX_SHADER, &shader)? };
         let debug_program = unsafe { link_program(gl, shaders::VERTEX_SHADER, debug_shader.as_ref())? };
